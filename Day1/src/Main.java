@@ -1,8 +1,12 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
+    /**
+     * The relative path, starting from project source, to the input file.
+     */
+    private static final String filename = "Day1/input.txt";
 
     /**
      * As the submarine drops below the surface of the ocean, it automatically performs a sonar sweep of the nearby sea
@@ -16,35 +20,41 @@ public class Main {
      * To do this, count the number of times a depth measurement increases from the previous measurement. (There is no
      * measurement before the first measurement.)
      *
-     * @param args The arguments given to the executable.
+     * @param data The data to use whilst counting.
      */
-    public static void main (String args[]) {
-
-        String filepath = "Day1/input.txt";
+    public static void part1 (ArrayList<Integer> data) {
         int count = 0;
+        for (int i = 1; i < data.size(); i++) if (data.get(i) > data.get(i -1)) count++;
+        System.out.println("The depth increased: " + count + " times.");
+    }
+
+    /**
+     *
+     * @param data The data to use whilst counting.
+     */
+    public static void part2 (ArrayList<Integer> data) {
+        int count = 0;
+        for (int i = 2; i < data.size() - 1; i++) { // This is the center of the second window in the comparison.
+            if (data.get(i + 1) > data.get(i - 2)) count++;
+        }
+        System.out.println("The 3 count window depth increased: " + count + " times.");
+    }
+
+    /**
+     * Main execution point for the program.
+     *
+     * @param args The arguments that would be given to this program through command line.
+     */
+    public static void main (String[] args) {
         try {
-            File f = new File(filepath);
-            System.out.println(f.getAbsoluteFile());
-            Scanner s = new Scanner(f);
-//            ---- Part 1 ----
-//            int previous = 0;
-//            int current = Integer.parseInt(s.nextLine());
-//            while (s.hasNextLine()) {
-//                previous = current;
-//                current = Integer.parseInt(s.nextLine());
-//                if (current > previous) count++;
-//            }
+            Scanner s = new Scanner(filename);
             ArrayList<Integer> data = new ArrayList<>();
             while (s.hasNextLine()) data.add(Integer.parseInt(s.nextLine()));
-            for (int i = 2; i < data.size() - 1; i++) { // This is the center of the second window in the comparison.
-//                int sum1 = data.get(i - 2) + data.get(i - 1) + data.get(i); // Naive solution
-//                int sum2 = data.get(i - 1) + data.get(i) + data.get(i + 1);
-                if (data.get(i + 1) > data.get(i - 2)) count++;
-            }
+            part1(data);
+            part2(data);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             for (StackTraceElement se : e.getStackTrace()) System.out.println(se.toString());
         }
-        System.out.println("The depth increased: " + count + " times.");
     }
 }
