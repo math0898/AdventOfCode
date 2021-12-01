@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -18,18 +19,27 @@ public class Main {
      * @param args The arguments given to the executable.
      */
     public static void main (String args[]) {
+
         String filepath = "Day1/input.txt";
         int count = 0;
         try {
             File f = new File(filepath);
             System.out.println(f.getAbsoluteFile());
             Scanner s = new Scanner(f);
-            int previous = 0;
-            int current = Integer.parseInt(s.nextLine());
-            while (s.hasNextLine()) {
-                previous = current;
-                current = Integer.parseInt(s.nextLine());
-                if (current > previous) count++;
+//            ---- Part 1 ----
+//            int previous = 0;
+//            int current = Integer.parseInt(s.nextLine());
+//            while (s.hasNextLine()) {
+//                previous = current;
+//                current = Integer.parseInt(s.nextLine());
+//                if (current > previous) count++;
+//            }
+            ArrayList<Integer> data = new ArrayList<>();
+            while (s.hasNextLine()) data.add(Integer.parseInt(s.nextLine()));
+            for (int i = 2; i < data.size() - 1; i++) { // This is the center of the second window in the comparison.
+//                int sum1 = data.get(i - 2) + data.get(i - 1) + data.get(i); // Naive solution
+//                int sum2 = data.get(i - 1) + data.get(i) + data.get(i + 1);
+                if (data.get(i + 1) > data.get(i - 2)) count++;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
