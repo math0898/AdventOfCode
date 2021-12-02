@@ -7,7 +7,7 @@ public class Main {
     /**
      * The relative path, starting from project source, to the input file.
      */
-    private static final String filename = "Day1/input.txt";
+    private static final String filename = "Day2/input.txt";
 
     /**
      *
@@ -36,10 +36,16 @@ public class Main {
         try {
             File f = new File(filename);
             Scanner s = new Scanner(f);
-            ArrayList<Integer> data = new ArrayList<>();
-            while (s.hasNextLine()) data.add(Integer.parseInt(s.nextLine()));
-            part1(data);
-            part2(data);
+            int horizontal = 0;
+            int depth = 0;
+            while (s.hasNextLine()) {
+                String input = s.nextLine();
+                if (input.contains("forward")) {
+                    horizontal += Integer.parseInt(input.replace("forward ", ""));
+                } else if (input.contains("up")) depth -= Integer.parseInt(input.replace("up ", ""));
+                else if (input.contains("down")) depth += Integer.parseInt(input.replace("down ", ""));
+            }
+            System.out.println(horizontal * depth);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             for (StackTraceElement se : e.getStackTrace()) System.out.println(se.toString());
