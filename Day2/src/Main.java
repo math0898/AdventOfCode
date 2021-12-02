@@ -38,12 +38,14 @@ public class Main {
             Scanner s = new Scanner(f);
             int horizontal = 0;
             int depth = 0;
+            int aim = 0;
             while (s.hasNextLine()) {
                 String input = s.nextLine();
                 if (input.contains("forward")) {
                     horizontal += Integer.parseInt(input.replace("forward ", ""));
-                } else if (input.contains("up")) depth -= Integer.parseInt(input.replace("up ", ""));
-                else if (input.contains("down")) depth += Integer.parseInt(input.replace("down ", ""));
+                    depth += aim * Integer.parseInt(input.replace("forward ", ""));
+                } else if (input.contains("up")) aim -= Integer.parseInt(input.replace("up ", ""));
+                else if (input.contains("down")) aim += Integer.parseInt(input.replace("down ", ""));
             }
             System.out.println(horizontal * depth);
         } catch (Exception e) {

@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -55,7 +56,7 @@ public class Main {
      */
     public static void main (String[] args) {
         try {
-            Scanner s = new Scanner(filename);
+            Scanner s = new Scanner(new File(filename));
             ArrayList<Integer> data = new ArrayList<>();
             while (s.hasNextLine()) data.add(Integer.parseInt(s.nextLine()));
             part1(data);
