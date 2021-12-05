@@ -33,7 +33,6 @@ int main () {
     if (!file->is_open()) return -1; // Failed to open file.
     int board[1000][1000];
     for (int i = 0; i < 1000; i++) for (int j = 0; j < 1000; j++) board[i][j] = 0;
-
     while (!file->eof()) {
         string p1, noise, p2;
         *file >> p1;
@@ -43,6 +42,7 @@ int main () {
         int y1 = getInt(',', 1, p1);
         int x2 = getInt(',', 0, p2);
         int y2 = getInt(',', 1, p2);
+        // Things are a little messy here. Basically ternary operators are used to determine starting and destination values.
         if (x1 == x2) for (int i = (y1 < y2 ? y1 : y2); i <= (y1 < y2 ? y2 : y1); i++) board[i][x1]++;
         else if (y1 == y2) for (int i = (x1 < x2 ? x1 : x2); i <= (x1 < x2 ? x2 : x1); i++) board[y1][i]++;
         else {
