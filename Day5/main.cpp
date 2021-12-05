@@ -45,6 +45,19 @@ int main () {
         int y2 = getInt(',', 1, p2);
         if (x1 == x2) for (int i = (y1 < y2 ? y1 : y2); i <= (y1 < y2 ? y2 : y1); i++) board[i][x1]++;
         else if (y1 == y2) for (int i = (x1 < x2 ? x1 : x2); i <= (x1 < x2 ? x2 : x1); i++) board[y1][i]++;
+        else {
+            //We're dealing with one of part 2's diagonal lines.
+            int x = x1;
+            int y = y1;
+            board[y1][x1]++;
+            while (x != x2 && y != y2) {
+                if (x < x2) x++;
+                else x--;
+                if (y < y2) y++;
+                else y--;
+                board[y][x]++;
+            }
+        }
     }
     int count = 0;
     for (int i = 0; i < 1000; i++) for (int j = 0; j < 1000; j++) if (board[i][j] > 1) count++;
