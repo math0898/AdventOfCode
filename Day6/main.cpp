@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-#include "Lanternfish.h"
 
 using namespace std;
 
