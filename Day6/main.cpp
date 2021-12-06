@@ -57,7 +57,6 @@ int main () {
         long i = fish[0];
         shift(&fish, 9);
         fish[6] += i;
-        fish[8] = i;
     }
     long count = 0;
     for (int i = 0; i < 9; i++) count += fish[i];
@@ -68,7 +67,6 @@ int main () {
         long i = fish[0];
         shift(&fish, 9);
         fish[6] += i;
-        fish[8] = i;
     }
     count = 0;
     for (int i = 0; i < 9; i++) count += fish[i];
