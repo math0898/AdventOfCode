@@ -33,6 +33,17 @@ void sort (int* array, int n) {
     }
 }
 
+/**
+ * Preforms what can only be called an addition factorial and returns the value.
+ * 
+ * @param n The integer to calculate the addition factorial of.
+ */
+int additionFactorial (int n) {
+    int count = 0;
+    for (int i = n; i > 0; i--) count += i;
+    return count;
+}
+
 int main (int argc, char** argv) { // test every fuel value.
     FILE* file = fopen("input.txt", "r");
     int length = 0;
@@ -60,5 +71,11 @@ int main (int argc, char** argv) { // test every fuel value.
     printf("Costing %d fuel for part 1.\n", count);
     int sum = 0;
     for (int i = 0; i < length; i++) sum += (array[i]);
+    int average = sum / length;
+    printf("Optimal position for part 2 is: %d\n", average);
+    count = 0;
+    // More ternary abuse.
+    for (int i = 0; i < length; i++) count += additionFactorial(array[i] < average ? average - array[i] : array[i] - average);
+    printf("Costing %d fuel for part 2.\n", count);
     fclose(file);
 }
