@@ -3,7 +3,7 @@
 #include "cipher.h"
 
 int main () {
-    FILE* file = fopen("example.txt", "r");
+    FILE* file = fopen("input.txt", "r");
     char*** inputs = malloc(sizeof(char*) * 7); // This will store each char array by length
     for (int i = 0; i < 7; i++) inputs[i] = malloc(sizeof(char*) * 3);
     int* counts = malloc(sizeof(int) * 7);
@@ -32,10 +32,25 @@ int main () {
         }
         Cipher* cipher = createCipher(inputs[1][0], inputs[3][0], inputs[2][0], inputs[6][0]);
         solveCipher(inputs[4], inputs[5], cipher);
-        printCipher(cipher);
-        printf("\n");
-        while (c != '\n' && c != EOF) c = fgetc(file); // todo cipher
+        int num = 0;
+        while (c != '\n' && c != EOF) {
+            c = fgetc(file);
+            char* decode = malloc(sizeof(char) * 7);
+            int decodeSize = 0;
+            while (c != ' ' && c != EOF && c != '\n') {
+                decode[decodeSize] = c;
+                decodeSize++;
+                c = fgetc(file);
+            }
+            if (decodeSize > 0) {
+                num *= 10;
+                num += solve(decode, decodeSize, cipher);
+            }
+            free(decode);
+        }
+        count += num;
     }
+    printf("Essential Display Values: %d", count);
     fclose(file);
     return 0;
 }
