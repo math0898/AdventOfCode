@@ -1,6 +1,8 @@
 #ifndef CIPHER_H
 #define CIPHER_H
 
+#include <stdio.h>
+
 struct cipher {
     char* zero;
     char* one;
@@ -37,6 +39,7 @@ Cipher* createCipher (char* one, char* four, char* seven, char* eight) {
     r->seven = seven;
     r->eight = eight;
     r->nine = NULL;
+    return r;
 }
 
 /**
@@ -125,6 +128,34 @@ void solveFives (char** fives, Cipher* cipher) {
 void solveCipher (char** fives, char** sixes, Cipher* cipher) {
     solveSixes(sixes, cipher);
     solveFives(fives, cipher);
+}
+
+/**
+ * Prints the given cipher to the console.
+ * 
+ * @param cipher The cipher to print to console.
+ */
+void printCipher (Cipher* cipher) {
+    for (int i = 0; i < 6; i++) printf("%c", cipher->zero[i]);
+    printf("\n");
+    for (int i = 0; i < 2; i++) printf("%c", cipher->one[i]);
+    printf("\n");
+    for (int i = 0; i < 5; i++) printf("%c", cipher->two[i]);
+    printf("\n");
+    for (int i = 0; i < 5; i++) printf("%c", cipher->three[i]);
+    printf("\n");
+    for (int i = 0; i < 4; i++) printf("%c", cipher->four[i]);
+    printf("\n");
+    for (int i = 0; i < 5; i++) printf("%c", cipher->five[i]);
+    printf("\n");
+    for (int i = 0; i < 6; i++) printf("%c", cipher->six[i]);
+    printf("\n");
+    for (int i = 0; i < 3; i++) printf("%c", cipher->seven[i]);
+    printf("\n");
+    for (int i = 0; i < 7; i++) printf("%c", cipher->eight[i]);
+    printf("\n");
+    for (int i = 0; i < 6; i++) printf("%c", cipher->nine[i]);
+    printf("\n");
 }
 
 #endif /* CIPHER_H */
