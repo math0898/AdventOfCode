@@ -78,4 +78,5 @@ int main (int argc, char** argv) { // test every fuel value.
     for (int i = 0; i < length; i++) count += additionFactorial(array[i] < average ? average - array[i] : array[i] - average);
     printf("Costing %d fuel for part 2.\n", count);
     fclose(file);
+    return 0;
 }
