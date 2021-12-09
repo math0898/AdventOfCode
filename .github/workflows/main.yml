@@ -10,11 +10,14 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    if: startsWith(github.repository, 'math0898')
     steps:
+      - uses: actions/checkout@v2
       - uses: joblo2213/aoc-badges-action@v3
         with:
           userid: 1574618                        # your user id, see setup on how to obtain
           session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
+          year: 2021
           
 #         Optional inputs:         
 #         year: 2021                                                                                     # The year for which stats should be retrieved
