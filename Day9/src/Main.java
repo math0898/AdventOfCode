@@ -1,17 +1,14 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
 
     public static void main (String[] args) {
-        ArrayList<ArrayList<Integer>> map = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> input = new ArrayList<>();
         Scanner s;
         try {
-            s = new Scanner(new File("Day9/example.txt"));
+            s = new Scanner(new File("Day9/input.txt"));
         } catch (IOException exception) {
             System.out.println(exception.getMessage());
             for (StackTraceElement e : exception.getStackTrace()) System.out.println(e.toString());
@@ -21,57 +18,48 @@ public class Main {
             String line = s.nextLine();
             ArrayList<Integer> intLine = new ArrayList<>();
             for (char c : line.toCharArray()) intLine.add(c - '0');
-            map.add(intLine);
+            input.add(intLine);
         }
-        int riskCount = 0;
-        int exit;
-        ArrayList<Integer> basinSizes = new ArrayList<>();
-        int basinSize;
-        for (int i = 0; i < map.size(); i++) {
-            for (int j = 0; j < map.get(i).size(); j++) {
-                Integer current = map.get(i).get(j);
-                exit = 0;
-                for (int di = -1; di <= 1; di++) {
-                    for (int dj = -1; dj <= 1; dj++) {
-                        if (di == 0 && dj == 0) continue;
-                        try {
-                            if (map.get(i + di).get(j + dj) < current) exit = 1;
-                        } catch (Exception ignored) { /* "I did nothing!" - King Bumi */ }
-                        if (exit == 1) break;
+        Map map = new Map(input);
+        map.print();
+        ArrayList<Map.Cell> localMin = new ArrayList<>();
+        for (int i = 0; i < map.getHeight(); i++) {
+            for (int j = 0; j < map.getWidth(); j++) {
+                int current = map.getValue(i, j);
+                if (current == 9) continue;
+                boolean min = true;
+                for (Map.Cell c : map.getNeighbors(i, j)) {
+                    if (c.value() < current) {
+                        min = false;
+                        break;
                     }
-                    if (exit == 1) break;
                 }
-                if (exit == 0) {
-                    basinSize = 1;
-                    Stack<Integer> toCheck = new Stack<>();
-                    toCheck.add(i);
-                    toCheck.add(j);
-                    riskCount += 1 + map.get(i).get(j);
-                    while (!toCheck.empty()) {
-                        int y = toCheck.pop();
-                        int x = toCheck.pop();
-                        if (y >= map.size() || y < 0) continue;
-                        if (x >= map.get(y).size() || x < 0 ) continue;
-                        if (map.get(y).get(x) == 9) continue;
-                        for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++) {
-                            if (Math.abs(dx) == Math.abs(dy)) continue;
-                            try {
-                                int check = map.get(y + dy).get(x + dx);
-                                if (check != 9 && check > map.get(y).get(x)) {
-                                    toCheck.add(y + dy);
-                                    toCheck.add(x + dx);
-                                }
-                            } catch (Exception ignored) { /* "I did nothing!" - King Bumi */ }
-                        }
-                        map.get(y).set(x, 9);
-                        basinSize++;
-                    }
-                    System.out.print("\n");
-                    basinSizes.add(basinSize);
-                }
+                if (min) localMin.add(map.getCell(i, j));
             }
         }
-        System.out.println("The risk value of this map is: " + riskCount);
-        for (Integer i : basinSizes) System.out.println(i);
+        int riskValue = 0;
+        for (Map.Cell c : localMin) riskValue += c.value() + 1;
+        System.out.println("The risk count for this map is: " + riskValue);
+        ArrayList<Integer> basinSizes = new ArrayList<>();
+        for (Map.Cell min : localMin) {
+            int size = 0;
+            Stack<Map.Cell> toCheck = new Stack<>();
+            toCheck.add(min);
+            while (!toCheck.empty()) {
+                Map.Cell current = toCheck.pop();
+                current = map.syncCell(current);
+                if (current.value() >= 10) continue;
+                size++;
+                Collection<Map.Cell> neighbors = map.getNeighbors(current);
+                for (Map.Cell c : neighbors) if (c.value() > current.value() && c.value() < 9) toCheck.add(c);
+                map.markCell(current.y(), current.x());
+            }
+            basinSizes.add(size);
+            map.unMark();
+        }
+        basinSizes.sort(Integer::compareTo);
+        System.out.println("The three largest basins are: " + basinSizes.get(basinSizes.size() - 3) + " * "
+                + basinSizes.get(basinSizes.size() - 2) + " * " + basinSizes.get(basinSizes.size() - 1) + " = "
+                + basinSizes.get(basinSizes.size() - 3) * basinSizes.get(basinSizes.size() - 2) * basinSizes.get(basinSizes.size() - 1));
     }
 }
