@@ -143,9 +143,11 @@ public class Map {
     }
 
     /**
-     * Updates the value stored in the cell to the one currently stored by the board.
+     * Syncs the given cell to the current state of the board. Since Cell is a record the value cannot be modified and
+     * so an updated version is returned instead.
      *
-     * @param cell The cell to update to the board state.
+     * @param cell The cell to sync with the board state.
+     * @return The cell updated to the board state.
      */
     public Cell syncCell (Cell cell) {
         return new Cell(cell.y(), cell.x(), board[cell.y()][cell.x()]);
