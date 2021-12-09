@@ -11,8 +11,6 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2                # clones your repo
-          
       - uses: joblo2213/aoc-badges-action@v3
         with:
           userid: 1574618                        # your user id, see setup on how to obtain
