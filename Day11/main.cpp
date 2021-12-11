@@ -8,7 +8,7 @@ int main () {
     octoGrid->print();
     long flashes = 0;
     int day = 0;
-    bool synced;
+    bool synced = false;
     while (day <= 99) {
         octoGrid->energy();
         flashes += octoGrid->flash();
