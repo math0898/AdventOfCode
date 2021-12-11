@@ -1,4 +1,7 @@
+#include <iostream>
 #include "Octo.cpp"
+
+using namespace std;
 
 int main () {
     OctoGrid* octoGrid = new OctoGrid("input.txt");
@@ -19,4 +22,6 @@ int main () {
         synced = octoGrid->checkSynced();
     }
     cout << "The Octopi synced up on day " << day << endl;
+    delete(octoGrid);
+    return 0;
 }

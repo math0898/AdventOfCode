@@ -36,6 +36,14 @@ class OctoGrid {
         }
 
         /**
+         * @brief Deconstructor for the OctoGrid. Mostly needed to make sure that the 2d array gets handled correctly.
+         */
+        ~OctoGrid () {
+            for (int i = 0; i < 10; i++) delete(grid[i]);
+            delete(grid);
+        }
+
+        /**
          * @brief Prints the OctoGrid to console.
          */
         void print () {
