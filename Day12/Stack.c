@@ -32,6 +32,11 @@ void add (Stack* stack, void* data) {
  */
 void* pop (Stack* stack) {
     if (stack->head == NULL) return NULL;
+    void* temp = stack->head->data;
+    Stack_Node* swap = stack->head->next;
+    free(stack->head);
+    stack->head = swap;
+    return temp;
 }
 
 /**
