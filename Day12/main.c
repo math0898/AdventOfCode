@@ -95,16 +95,22 @@ int main () {
             printStack(path);
             continue;
         }
-        if (contains(path, current)) {
-            pop(path);
-            for (int i = 0; i < 10; i++) if (matrix[current][i] == -1) matrix[current][i] = 1;
-        } else {
-            for (int i = 0; i< 10; i++) if (matrix[current][i] == 1) {
-                add(toCheck, i);
-                matrix[current][i] = -1;
+        add(path, current);
+        for (int i = 0; i < 10; i++) {
+            if (matrix[current][i] == 1) {
+                if (!contains(path, i) || table[i][0] >= 'A') add(toCheck, i);
             }
-            add(path, current);
         }
+        // if (contains(path, current) && table[current][0] < 'A' ) {
+        //     pop(path);
+        //     // for (int i = 0; i < 10; i++) if (matrix[current][i] == -1) matrix[current][i] = 1;
+        // } else {
+        //     for (int i = 0; i< 10; i++) if (matrix[current][i] == 1 || (table[i][0] >= 'A' && matrix[current][i] == -1)) {
+        //         add(toCheck, i);
+        //         matrix[current][i] = -1;
+        //     }
+        //     add(path, current);
+        // }
     }
     printMatrix(matrix, 6);
     for (int i = 0; i < 10; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);
