@@ -128,13 +128,17 @@ int main () {
             if (matrix[current][i] == 1) {
                 if (!contains(path, i)) add(toCheck, i); // Add case if there is not already a doubled up path
                 else if ((int) table[i][0] <= (int) 'Z') add(toCheck, i);
-                else {
+                else if (!(table[i][0] == 's' && table[i][1] == 't') && !(table[i][0] == 'e' && table[i][1] == 'n')){
                     int max = 0;
                     for (int j = 0; j < UNIQUE_NODES; j++) {
                         int count = contains(path, j);
                         if (count > max) max = count;
                     }
-                    if (max < 2) add(toCheck, i);
+                    if (max < 2) {
+                        printStack(path);
+                        printf("%d\n", i);
+                        add(toCheck, i);
+                    }
                 }
             }
         }
