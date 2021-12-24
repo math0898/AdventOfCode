@@ -92,12 +92,10 @@ int main () {
         int current = pop(toCheck);
         if (current == endIndx) {
             paths++;
-            printf("\n");
             printStack(path);
-            printf("\n");
             continue;
         }
-        if (current == peek(path)) {
+        if (contains(path, current)) {
             pop(path);
             for (int i = 0; i < 10; i++) if (matrix[current][i] == -1) matrix[current][i] = 1;
         } else {
@@ -107,7 +105,6 @@ int main () {
             }
             add(path, current);
         }
-        printStack(path);
     }
     printMatrix(matrix, 6);
     for (int i = 0; i < 10; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);

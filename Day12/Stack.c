@@ -72,3 +72,19 @@ void printStack (Stack* stack) {
     }
     printf("\n");
 }
+
+/**
+ * Checks if the stack contains the given data value.
+ * 
+ * @param stack The stack to check for the data in.
+ * @param data The data to check for in the stack.
+ * @return 1 if it does, 0 if it does not.
+ */
+char contains (Stack* stack, int data) {
+    Stack_Node* current = stack->head;
+    while (current != NULL) {
+        if (current->data == data) return (char) 1;
+        current = current->next;
+    }
+    return (char) 0;
+}
