@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Stack.h"
+#include "Stack.c" // Needed to run from VSCode
 
 /**
  * Prints the given matrix to the console. The matrix should be square and 2 dimensional. The elements will be printed as ints.
@@ -17,6 +19,8 @@ void printMatrix (int** array, int n) {
 
 int main () {
     int node = 0;
+    int startIndx = -1;
+    int endIndx = -1;
     int** matrix = malloc(sizeof(int*) * 10);
     for (int i = 0; i < 10; i++) {
         matrix[i] = malloc(sizeof(int) * 10);
@@ -55,12 +59,16 @@ int main () {
                 }
             }
             if ((nodeFound & 1) == 0) {
+                if (buffer[0] == 's' && buffer[1] == 't') startIndx = node;
+                else if (buffer[0] == 'e' && buffer[1] == 'n') endIndx = node;
                 table[node][0] = buffer[0];
                 table[node][1] = buffer[1];
                 srcIndex = node;
                 node++;
             } 
             if ((nodeFound & 2) == 0) {
+                if (buffer[2] == 's' && buffer[3] == 't') startIndx = node;
+                else if (buffer[2] == 'e' && buffer[3] == 'n') endIndx = node;
                 table[node][0] = buffer[2];
                 table[node][1] = buffer[3];
                 destIndex = node;
@@ -76,7 +84,32 @@ int main () {
         }
     }
     free(buffer);
-    printMatrix(matrix, 10);
+    int paths = 0;
+    Stack* toCheck = createStack();
+    add(toCheck, startIndx);
+    Stack* path = createStack();
+    while (!isEmpty(toCheck)) {
+        int current = pop(toCheck);
+        if (current == endIndx) {
+            paths++;
+            printf("\n");
+            printStack(path);
+            printf("\n");
+            continue;
+        }
+        if (current == peek(path)) {
+            pop(path);
+            for (int i = 0; i < 10; i++) if (matrix[current][i] == -1) matrix[current][i] = 1;
+        } else {
+            for (int i = 0; i< 10; i++) if (matrix[current][i] == 1) {
+                add(toCheck, i);
+                matrix[current][i] = -1;
+            }
+            add(path, current);
+        }
+        printStack(path);
+    }
+    printMatrix(matrix, 6);
     for (int i = 0; i < 10; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);
     for (int i = 0; i < 10; i++) {
         free(table[i]);
@@ -85,5 +118,6 @@ int main () {
     free(table);
     free(matrix);
     fclose(file);
+    printf("\n%d\n", paths);
     return 0;
 }

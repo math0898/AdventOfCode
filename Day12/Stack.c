@@ -16,9 +16,9 @@ Stack* createStack () {
  * Adds the given data into the given stack.
  * 
  * @param stack The stack that data should be added to.
- * @param data The data to add into the stack. Should match the types of other elements to prevent casting related errors.
+ * @param data The data to add into the stack.
  */
-void add (Stack* stack, void* data) {
+void add (Stack* stack, int data) {
     Stack_Node* temp = malloc(sizeof(Stack_Node));
     temp->next = stack->head;
     temp->data = data;
@@ -30,9 +30,9 @@ void add (Stack* stack, void* data) {
  * 
  * @return The data containted in the topmost node.
  */
-void* pop (Stack* stack) {
-    if (stack->head == NULL) return NULL;
-    void* temp = stack->head->data;
+int pop (Stack* stack) {
+    if (stack->head == NULL) return -1;
+    int temp = stack->head->data;
     Stack_Node* swap = stack->head->next;
     free(stack->head);
     stack->head = swap;
@@ -44,8 +44,8 @@ void* pop (Stack* stack) {
  * 
  * @return The data contained in the topmost node.
  */
-void* peek (Stack* stack) {
-    if (stack->head == NULL) return NULL;
+int peek (Stack* stack) {
+    if (stack->head == NULL) return -1;
     return stack->head->data;
 }
 
@@ -57,4 +57,18 @@ void* peek (Stack* stack) {
 char isEmpty (Stack* stack) {
     if (stack->head == NULL) return (char) 1;
     return (char) 0;
+}
+
+/**
+ * Prints the stack to console. This will not alter the stack in any way.
+ * 
+ * @param stack The stack to print to console.
+ */
+void printStack (Stack* stack) {
+    Stack_Node* current = stack->head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
 }
