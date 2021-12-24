@@ -9,6 +9,7 @@
 Stack* createStack () {
     Stack* toReturn = malloc(sizeof(Stack));
     toReturn->head = NULL;
+    toReturn->size = 0;
     return toReturn;
 }
 
@@ -23,6 +24,7 @@ void add (Stack* stack, int data) {
     temp->next = stack->head;
     temp->data = data;
     stack->head = temp;
+    stack->size++;
 }
 
 /**
@@ -36,6 +38,7 @@ int pop (Stack* stack) {
     Stack_Node* swap = stack->head->next;
     free(stack->head);
     stack->head = swap;
+    stack->size--;
     return temp;
 }
 

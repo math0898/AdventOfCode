@@ -3,6 +3,8 @@
 #include "Stack.h"
 #include "Stack.c" // Needed to run from VSCode
 
+#define UNIQUE_NODES 15
+
 /**
  * Prints the given matrix to the console. The matrix should be square and 2 dimensional. The elements will be printed as ints.
  * 
@@ -21,18 +23,18 @@ int main () {
     int node = 0;
     int startIndx = -1;
     int endIndx = -1;
-    int** matrix = malloc(sizeof(int*) * 10);
-    for (int i = 0; i < 10; i++) {
-        matrix[i] = malloc(sizeof(int) * 10);
+    int** matrix = malloc(sizeof(int*) * UNIQUE_NODES);
+    for (int i = 0; i < UNIQUE_NODES; i++) {
+        matrix[i] = malloc(sizeof(int) * UNIQUE_NODES);
         for (int j = 0; j < 10; j++) matrix[i][j] = 0;
     }
-    char** table = malloc(sizeof(char*) * 10);
-    for (int i = 0; i < 10; i++) {
+    char** table = malloc(sizeof(char*) * UNIQUE_NODES);
+    for (int i = 0; i < UNIQUE_NODES; i++) {
         table[i] = malloc(sizeof(char) * 2);
         table[i][0] = ' ';
         table[i][1] = ' ';
     }
-    FILE* file = fopen("example1.txt", "r");
+    FILE* file = fopen("input.txt", "r");
     char c = ' ';
     int index = 0;
     int lock = 0;
@@ -94,27 +96,22 @@ int main () {
             paths++;
             printStack(path);
             continue;
+        } else if (current == peek(path)) {
+            pop(path);
+            continue;
         }
         add(path, current);
-        for (int i = 0; i < 10; i++) {
+        add(toCheck, current);
+        for (int i = 0; i < UNIQUE_NODES; i++) {
             if (matrix[current][i] == 1) {
-                if (!contains(path, i) || table[i][0] >= 'A') add(toCheck, i);
+                if (!contains(path, i)) add(toCheck, i);
+                else if ((int) table[i][0] <= (int) 'Z') add(toCheck, i);
             }
         }
-        // if (contains(path, current) && table[current][0] < 'A' ) {
-        //     pop(path);
-        //     // for (int i = 0; i < 10; i++) if (matrix[current][i] == -1) matrix[current][i] = 1;
-        // } else {
-        //     for (int i = 0; i< 10; i++) if (matrix[current][i] == 1 || (table[i][0] >= 'A' && matrix[current][i] == -1)) {
-        //         add(toCheck, i);
-        //         matrix[current][i] = -1;
-        //     }
-        //     add(path, current);
-        // }
     }
-    printMatrix(matrix, 6);
-    for (int i = 0; i < 10; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);
-    for (int i = 0; i < 10; i++) {
+    printMatrix(matrix, UNIQUE_NODES);
+    for (int i = 0; i < UNIQUE_NODES; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);
+    for (int i = 0; i < UNIQUE_NODES; i++) {
         free(table[i]);
         free(matrix[i]);
     }

@@ -39,6 +39,11 @@ struct Stack {
      */
     Stack_Node* head;
 
+    /**
+     * The size of the stack. Used mostly for debugging.
+     */
+    int size;
+
 };
 
 typedef struct Stack Stack;
