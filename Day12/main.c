@@ -26,7 +26,7 @@ int main () {
     int** matrix = malloc(sizeof(int*) * UNIQUE_NODES);
     for (int i = 0; i < UNIQUE_NODES; i++) {
         matrix[i] = malloc(sizeof(int) * UNIQUE_NODES);
-        for (int j = 0; j < 10; j++) matrix[i][j] = 0;
+        for (int j = 0; j < UNIQUE_NODES; j++) matrix[i][j] = 0;
     }
     char** table = malloc(sizeof(char*) * UNIQUE_NODES);
     for (int i = 0; i < UNIQUE_NODES; i++) {
@@ -34,7 +34,7 @@ int main () {
         table[i][0] = ' ';
         table[i][1] = ' ';
     }
-    FILE* file = fopen("input.txt", "r");
+    FILE* file = fopen("example1.txt", "r");
     char c = ' ';
     int index = 0;
     int lock = 0;
@@ -86,6 +86,7 @@ int main () {
         }
     }
     free(buffer);
+    printMatrix(matrix, UNIQUE_NODES);
     int paths = 0;
     Stack* toCheck = createStack();
     add(toCheck, startIndx);
@@ -94,7 +95,6 @@ int main () {
         int current = pop(toCheck);
         if (current == endIndx) {
             paths++;
-            printStack(path);
             continue;
         } else if (current == peek(path)) {
             pop(path);
@@ -109,8 +109,37 @@ int main () {
             }
         }
     }
-    printMatrix(matrix, UNIQUE_NODES);
-    for (int i = 0; i < UNIQUE_NODES; i++) printf("%d: %c%c\n", i, table[i][0], table[i][1]);
+    printf("\nThere are %d paths when visiting small caves once.\n", paths);
+    paths = 0;
+    add(toCheck, startIndx);
+    while(!isEmpty(path)) pop(path);
+    while (!isEmpty(toCheck)) {
+        int current = pop(toCheck);
+        if (current == endIndx) {
+            paths++;
+            continue;
+        } else if (current == peek(path)) {
+            pop(path);
+            continue;
+        }
+        add(path, current);
+        add(toCheck, current);
+        for (int i = 0; i < UNIQUE_NODES; i++) {
+            if (matrix[current][i] == 1) {
+                if (!contains(path, i)) add(toCheck, i); // Add case if there is not already a doubled up path
+                else if ((int) table[i][0] <= (int) 'Z') add(toCheck, i);
+                else {
+                    int max = 0;
+                    for (int j = 0; j < UNIQUE_NODES; j++) {
+                        int count = contains(path, j);
+                        if (count > max) max = count;
+                    }
+                    if (max < 2) add(toCheck, i);
+                }
+            }
+        }
+    }
+    printf("There are %d paths when visiting when visiting a single small cave twice.", paths);
     for (int i = 0; i < UNIQUE_NODES; i++) {
         free(table[i]);
         free(matrix[i]);
@@ -118,6 +147,5 @@ int main () {
     free(table);
     free(matrix);
     fclose(file);
-    printf("\n%d\n", paths);
     return 0;
 }
