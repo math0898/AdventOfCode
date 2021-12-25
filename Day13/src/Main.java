@@ -39,7 +39,7 @@ public class Main {
             if (hor > 0) {
                 char[][] temp = new char[hor][xSize];
                 int mark = hor;
-                for (int i = 0; i < hor; i++) for (int j = 0; j < xSize; j++) temp[i][j] = board[i][j];
+                for (int i = 0; i < hor; i++) System.arraycopy(board[i], 0, temp[i], 0, xSize);
                 for (int i = hor + 1; i < ySize; i++) {
                     mark--;
                     for (int j = 0; j < xSize; j++) if (board[i][j] == '#') temp[mark][j] = '#';
@@ -49,10 +49,9 @@ public class Main {
             } else {
                 hor *= -1;
                 char[][] temp = new char[ySize][hor];
-                int mark = hor;
-                for (int i = 0; i < ySize; i++) for (int j = 0; j < hor; j++) temp[i][j] = board[i][j];
+                for (int i = 0; i < ySize; i++) System.arraycopy(board[i], 0, temp[i], 0, hor);
                 for (int i = 0; i < ySize; i++) {
-                    mark = hor;
+                    int mark = hor;
                     for (int j = hor + 1; j < xSize; j++) {
                         mark--;
                         if (board[i][j] == '#') temp[i][mark] = '#';
