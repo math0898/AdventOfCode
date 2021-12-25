@@ -34,7 +34,7 @@ int main () {
         table[i][0] = ' ';
         table[i][1] = ' ';
     }
-    FILE* file = fopen("example1.txt", "r");
+    FILE* file = fopen("input.txt", "r");
     char c = ' ';
     int index = 0;
     int lock = 0;
@@ -131,14 +131,11 @@ int main () {
                 else if (!(table[i][0] == 's' && table[i][1] == 't') && !(table[i][0] == 'e' && table[i][1] == 'n')){
                     int max = 0;
                     for (int j = 0; j < UNIQUE_NODES; j++) {
+                        if ((int) table[j][0] <= (int) 'Z') continue;
                         int count = contains(path, j);
                         if (count > max) max = count;
                     }
-                    if (max < 2) {
-                        printStack(path);
-                        printf("%d\n", i);
-                        add(toCheck, i);
-                    }
+                    if (max < 2) add(toCheck, i);
                 }
             }
         }
