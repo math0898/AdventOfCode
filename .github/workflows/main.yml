@@ -32,6 +32,7 @@ jobs:
           commit_message: Update badges
           file_pattern: README.md
   update2022:
+    needs: update2021
     runs-on: ubuntu-latest
     if: startsWith(github.repository, 'math0898')
     steps:
