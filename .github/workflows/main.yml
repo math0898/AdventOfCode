@@ -8,16 +8,16 @@ on:
   workflow_dispatch:                             # allow to manually start the workflow 
 
 jobs:
-  update2021:
-    runs-on: ubuntu-latest
-    if: startsWith(github.repository, 'math0898')
-    steps:
-      - uses: actions/checkout@v2
-      - uses: joblo2213/aoc-badges-action@v3
-        with:
-          userid: 1574618                        # your user id, see setup on how to obtain
-          session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
-          year: 2021
+#  update2021:
+#    runs-on: ubuntu-latest
+#    if: startsWith(github.repository, 'math0898')
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: joblo2213/aoc-badges-action@v3
+#        with:
+#          userid: 1574618                        # your user id, see setup on how to obtain
+#          session: ${{ secrets.AOC_SESSION }}    # secret containing session code, see setup on how to obtain
+#          year: 2021
           
 #         Optional inputs:         
 #         year: 2021                                                                                     # The year for which stats should be retrieved
@@ -27,12 +27,12 @@ jobs:
 #         starsRegex: '(?<=https:\/\/img\.shields\.io\/badge\/stars%20⭐-)[0-9]+(?=-yellow)'             # Regular expression that finds the content of the stars badge in your file.
 #         daysCompletedRegex: '(?<=https:\/\/img\.shields\.io\/badge\/days%20completed-)[0-9]+(?=-red)'  # Regular expression that finds the content of the days completed badge iun your file.
 
-      - uses: stefanzweifel/git-auto-commit-action@v4     # Step that pushes these local changes back to your github repo
-        with:
-          commit_message: Update badges
-          file_pattern: README.md
+#      - uses: stefanzweifel/git-auto-commit-action@v4     # Step that pushes these local changes back to your github repo
+#        with:
+#          commit_message: Update badges
+#          file_pattern: README.md
   update2022:
-    needs: update2021
+#    needs: update2021
     runs-on: ubuntu-latest
     if: startsWith(github.repository, 'math0898')
     steps:
