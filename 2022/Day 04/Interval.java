@@ -17,6 +17,18 @@ public record Interval (int a, int b) {
         return a >= i.a && b <= i.b;
     }
     
+    /**
+     * Checks whether *this* interval has an nonempty intersection
+     * with the given interval.
+     * 
+     * @param i The interval to intersect with this one. 
+     * @return Ture if and only if this interval has a nonempty
+     * intersection with i.
+     */
+    public boolean nonemptyIntersection (Interval i) {
+        return (i.a <= a && a <= i.b) || (i.a <= b && b <= i.b);
+    }
+
     @Override
     public String tString () {
         return "[" + a + "," + b + "]";

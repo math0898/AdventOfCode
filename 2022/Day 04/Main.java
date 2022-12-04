@@ -15,6 +15,7 @@ public class Main {
         }
 
         int subsets = 0;
+        int overlaps = 0;
 
         while (s.hasNextLine()) {
             Scanner f = new Scanner(s.nextLine());
@@ -27,11 +28,13 @@ public class Main {
             a = Integer.parseInt(f.next().replace(",", ""));
             b = f.nextInt();
             Interval i2 = new Interval(a, b);
-            System.out.println(i1 + " --> " + i2);
             if (i1.subset(i2) || i2.subset(i1)) subsets++;
+            if (i1.nonemptyIntersection(i2) || i2.nonemptyIntersection(i1)) overlaps++;
         }
 
         System.out.println("There are " + subsets 
         + " intervals which are a subset of another.");
+        System.out.println("There are " + overlaps 
+        + " intervals which overlap with one another.");
     }
 }
