@@ -29,7 +29,6 @@ public record Interval (int a, int b) {
         return (i.a <= a && a <= i.b) || (i.a <= b && b <= i.b);
     }
 
-    @Override
     public String tString () {
         return "[" + a + "," + b + "]";
     }
