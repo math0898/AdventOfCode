@@ -40,7 +40,7 @@ void pushStack (Stack* s, char c) {
     temp[0] = c;
     for (long i = 0; i < s->length; i++)
         temp[i + 1] = s->arr[i];
-    free(s->arr);
+    if (s->length > 0) free(s->arr);
     s->arr = temp;
 }
 
@@ -60,6 +60,11 @@ Stack* createStack () {
     toReturn->length = 0;
     toReturn->arr = malloc(sizeof(char) * 0); // malloc 0 in disguise... undefined behavior :shrug:
     return toReturn;
+}
+
+void deleteStack (Stack* s) {
+    free(s->arr);
+    free(s);
 }
 
 int readTillInt (FILE* file) {
@@ -112,12 +117,17 @@ int main () {
         from = readTillInt(file) - 1; // File indexes from 1, we do 0
         to = readTillInt(file) - 1; // See from
         if (c != (char) EOF) {
-            for (int i = 0; i < count; i++) 
-                stacks[to]->push(stacks[to], stacks[from]->pop(stacks[from]));
+            Stack* temp = createStack();
+            for (int i = 0; i < count; i++)
+                temp->push(temp, stacks[from]->pop(stacks[from]));
+            // temp->reverse(temp); // This line uncommented produces part 1
+            for (char c = temp->pop(temp); c != (char) -1; c = temp->pop(temp))
+                stacks[to]->push(stacks[to], c);
             printf("\n\n\n");
             printf("move %i from %i to %i \n", count, from + 1, to + 1);
             for (int i = 0; i < stackCount; i++) 
                 stacks[i]->print(stacks[i]);
+            deleteStack(temp);
         }
         c = fgetc(file);
     }
@@ -127,10 +137,14 @@ int main () {
     for (int i = 0; i < stackCount; i++) 
         stacks[i]->print(stacks[i]);
 
-    printf("Part 1 Solution: "); // TODO: Up to this point the program has undeterministic behavior.
+    printf("Part 2 Solution: "); // TODO: Up to this point the program has undeterministic behavior.
     for (int i = 0; i < stackCount; i++) 
         printf("%c", stacks[i]->arr[0]);
     printf("\n");
+
+    fclose(file);
+    for (int i = 0; i < stackCount; i++) deleteStack(stacks[i]);
+    free(stacks);
 
     return 0;
 }
