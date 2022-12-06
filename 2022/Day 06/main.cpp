@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int arr_length = 4; // 4 for pt1, 14 for pt2
+int arr_length = 14; // 4 for pt1, 14 for pt2
 
 bool containsDupe (char* arr) {
     for (int i = 0; i < arr_length; i++)
