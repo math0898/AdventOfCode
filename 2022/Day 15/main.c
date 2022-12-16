@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define MAX(a,b) a > b ? a : b
+
+#define SEARCH_AREA 4000000
+
 typedef struct Sensor {
 
     int sX;
@@ -31,10 +35,7 @@ short isCloserThanBeacon (Sensor s, int aX, int aY) {
 
 void resize (Sensor** arr, Sensor insert, int length) {
     Sensor* temp = (Sensor*) malloc(sizeof(Sensor) * (length + 1));
-    for (int i = 0; i < length; i++) {
-        printf("%i ", i);
-        temp[i] = (*arr)[i];
-    }
+    for (int i = 0; i < length; i++) temp[i] = (*arr)[i];
     free(*arr);
     temp[length] = insert;
     *arr = temp;
@@ -97,12 +98,9 @@ int main () {
 
     for (int i = 0; i < length; i++) {
         Sensor s = sensors[i];
-        printf("Sensor: <%i, %i>, Beacon: <%i, %i>\n", s.sX, s.sY, s.bX, s.bY);
         if (s.sX > maxSensorX) maxSensorX = s.sX;
         if (s.bX > maxBeaconX) maxBeaconX = s.bX;
     }
-
-    printf("Checking -%i --> %i\n", maxBeaconX + maxSensorX, maxBeaconX + maxSensorX);
 
     long sum = -1;
 
@@ -117,29 +115,24 @@ int main () {
 
     printf("Cells Covered: %ld\n", sum);
 
-    int solutionX = -1;
-    int solutionY = -1;
-    long long step = 0;
-    long long fullSteps = 4000000 * 4000000;
-    long long increment = fullSteps / 90;
-    printf("Increment: %lld\n", increment);
+    long long int solutionX = -1;
+    long long int solutionY = -1;
 
-
-    for (int i = 0; i < 4000000; i++) {
+    for (int i = 0; i < SEARCH_AREA; i++) {
         if (solutionX + solutionY != -2) break;
-        for (int j = 0; j < 4000000; j++) {
+        for (int j = 0; j < SEARCH_AREA; j++) {
             if (solutionX + solutionY != -2) break;
             int close = 0;
             for (int k = 0; k < length; k++) {
-                while (isCloserThanBeacon(sensors[k], i, j) == 1) {
+                Sensor s = sensors[k];
+                while (isCloserThanBeacon(s, i, j) == 1) {
                     close = 1;
+                    int cur = manhattanDist(s.sX, s.sY, i, j);
+                    int max = manhattanDistBeacon(s);
+                    int delta = MAX((max - cur), 1);
+                    j += delta - 1;
                     break;
                 }
-            }
-            step += 1;
-            if (step >= increment) {
-                printf("=");
-                step = 0;
             }
             if (close == 0) {
                 solutionX = i;
@@ -149,7 +142,7 @@ int main () {
         }
     }
     printf("\n");
-    printf("(%i, %i) => %ld\n", solutionX, solutionY, (solutionX * 4000000) + solutionY);
+    printf("(%lld, %lld) => %lld\n", solutionX, solutionY, solutionX * ((long long int) 4000000) + solutionY);
 
     return 0;
 }
