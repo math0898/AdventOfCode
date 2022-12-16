@@ -50,33 +50,38 @@ int main () {
     for (int i = 1; i < height - 1; i++) {
         for (int j = 1; j < maxWidth - 1; j++) {
             char val = board[i][j];
-            bool found = false;
-            for (int dx = 0; j + dx < maxWidth; dx++)
-                if (board[i][j + dx] >= val) found = true;
-            if (found == false) {
-                visible++;
-                break;
+            bool canSee = true;
+            for (int k = 0; k < i; k++) {
+                if (board[k][j] >= val)
+                    canSee = false;
             }
-            found = false;
-            for (int dx = 0; j + dx > 0; dx--)
-                if (board[i][j + dx] >= val) found = true;
-            if (found == false) {
+            if (canSee) {
                 visible++;
-                break;
+                continue;
             }
-            found = false;
-            for (int dy = 0; i + dy < height; dy++)
-                if (board[i + dy][j] >= val) found = true;
-            if (found == false) {
-                visible++;
-                break;
+            for (int k = 0; k < j; k++) {
+                if (board[i][k] >= val)
+                    canSee = false;
             }
-            found = false;
-            for (int dy = 0; i + dy > 0; dy--)
-                if (board[i  +dy][j] >= val) found = true;
-            if (found == false) {
+            if (canSee) {
                 visible++;
-                break;
+                continue;
+            }
+            for (int k = maxWidth - 1; k > i; k--) {
+                if (board[k][j] >= val)
+                    canSee = false;
+            }
+            if (canSee) {
+                visible++;
+                continue;
+            }
+            for (int k = height - 1; k > j; k--) {
+                if (board[i][k] >= val)
+                    canSee = false;
+            }
+            if (canSee) {
+                visible++;
+                continue;
             }
         }
     }
