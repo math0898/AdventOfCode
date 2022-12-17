@@ -16,6 +16,20 @@ int readIndex (FILE* file) {
     return (26 * (c1 - 'A') + (c2 - 'A'));
 }
 
+void resize (Node** arr, Node insert, int length) {
+    Node* temp = (Node*) malloc(sizeof(int) * (length + 1));
+    for (int i = 0; i < length; i++) temp[i] = (*arr)[i];
+    free(*arr);
+    temp[length] = insert;
+    *arr = temp;
+}
+
+void resize (Node** arr, Node insert) {
+    int length = 0;
+    while ((*arr)[length].flow_rate != -1) length++;
+    resize(arr, insert, length);
+}
+
 void resize (int** arr, int insert, int length) {
     int* temp = (int*) malloc(sizeof(int) * (length + 1));
     for (int i = 0; i < length; i++) temp[i] = (*arr)[i];
@@ -78,45 +92,18 @@ int main () {
         nodes[index] = n;
     }
 
-    for (int i = 0; i < length; i++) {
-        Node n = nodes[i];
-        if (n.flow_rate != -1) {
-            printf("Node: %i(%i) --->", i, n.flow_rate);
-            for (int j = 0; j < n.branch; j++) printf(" %i", n.children[j]);
-            printf("\n");
-        }
-    }
-
-    int bestPath[30];
-    int currentPath[30];
     int sum = 0;
     int flowRate = 0;
-    for (int i = 0; i < 30; i++) {
-        currentPath[i] = -2;
-        bestPath[i] = -2;
-    }
-
-    short open = 0;
 
     Node current = nodes[0];
-    for (int i = 0; i < 30; i++) {
-        sum += current.flow_rate;
-        if (current.flow_rate > 0 && open == 0) {
-            flowRate += current.flow_rate;
-            open = 1;
-        } else {
-            open = 0;
-            int toMove = -1;
-            int nextflow = 0;
-            for (int j = 0; j < current.branch; j++) {
-                if (nodes[current.children[j]].flow_rate > nextflow) {
-                    toMove = current.children[j];
-                    nextflow = nodes[current.children[j]].flow_rate;
-                }
-            }
-            current = nodes[toMove];
-        }
-    }
+    Node* open = (Node*) malloc(sizeof(Node) * 1);
+    open[0] = null;
+    Node* continuousNodes = (Node*) malloc(sizeof(Node) * 1);
+    continuousNodes[0] = null;
+    for (int i = 0; i < length; i++) if (nodes[i].flow_rate != -1) resize(&continuousNodes, nodes[i]);
+    int numOpen = 0;
+    // Idea 1) Weight each node we can travel to.
+    for ()
 
     printf("Sum: %i\n", sum);
 
